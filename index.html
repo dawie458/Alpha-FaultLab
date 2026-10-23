@@ -1,0 +1,345 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#08111f"><title>Alpha FaultLab • Technical Training</title>
+<style>
+:root{--bg:#08111f;--panel:#101f32;--raised:#182b43;--stroke:#28405b;--text:#eaf5fc;--muted:#a2b5c9;--blue:#26b7ed;--green:#54d3a0;--amber:#f9c86b;--red:#f58391;--shadow:0 12px 30px rgba(0,0,0,.16)}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(ellipse 1000px 400px at 80% -20%,#123759 0%,transparent 75%),var(--bg);color:var(--text);font:15px/1.5 -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif}
+button,input,select{font:inherit}
+button{cursor:pointer}
+button:disabled{cursor:not-allowed;opacity:.44}
+.app{max-width:1280px;margin:auto;padding:18px 18px 75px}
+.top{display:flex;align-items:center;gap:13px;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap}
+.brand{display:flex;gap:12px;align-items:center;font-weight:800;letter-spacing:.04em}
+.brandmark{width:46px;height:46px;background:linear-gradient(135deg,#1dbbec,#1867b1);border-radius:14px;display:grid;place-items:center;color:#041323;font-size:23px;font-weight:900}
+.brand small{display:block;color:var(--muted);font-weight:500;letter-spacing:0}
+.pill{border:1px solid var(--stroke);border-radius:40px;padding:6px 11px;color:var(--muted);font-size:12px}
+.hero{background:linear-gradient(120deg,#10263f,#0d2635);border:1px solid #2d5578;box-shadow:var(--shadow);padding:23px;border-radius:20px;margin-bottom:18px}
+.eyebrow{font-size:11px;letter-spacing:.15em;color:var(--blue);font-weight:800;text-transform:uppercase}
+h1{font-size:clamp(24px,3.4vw,37px);line-height:1.14;letter-spacing:-.03em;margin:8px 0}
+h2{font-size:20px;line-height:1.25;margin:0 0 8px}
+h3{font-size:16px;margin:0 0 8px}
+.muted{color:var(--muted)}
+.small{font-size:12px}
+.layout{display:grid;grid-template-columns:255px minmax(0,1fr);gap:18px}
+.panel{background:var(--panel);border:1px solid var(--stroke);border-radius:17px;padding:19px;margin-bottom:16px}
+.side{align-self:start;position:sticky;top:12px}
+.case{width:100%;text-align:left;background:transparent;border:1px solid transparent;color:var(--text);border-radius:11px;padding:10px;margin-top:4px;display:flex;gap:9px;align-items:flex-start}
+.case.active{background:#16354e;border-color:#286187}
+.case:hover{background:#172e46}
+.number{color:var(--blue);min-width:24px;font-size:12px;font-weight:800;padding-top:2px}
+.case-title{font-size:13px;line-height:1.35}
+.case small{display:block;color:var(--muted);font-size:11px}
+.main{min-width:0}
+.stepper{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:17px}
+.step{border:1px solid var(--stroke);background:#102137;border-radius:12px;padding:10px 8px;text-align:center;color:var(--muted);font-size:12px}
+.step.on{border-color:var(--blue);background:#163c55;color:#ecfaff}
+.step.done{border-color:#2e8a75;color:var(--green)}
+.btn{border:1px solid #39779d;background:#145a83;color:white;padding:11px 16px;border-radius:11px;font-weight:750}
+.btn:hover{filter:brightness(1.1)}
+.btn.secondary{background:var(--raised);border-color:var(--stroke)}
+.btn.success{background:#126749;border-color:#26886c}
+.btn.warn{background:#674b1e;border-color:#9f7833}
+.btn.ghost{background:transparent;border-color:var(--stroke)}
+.actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:17px}
+.cluster{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.flow{display:flex;align-items:stretch;gap:7px;overflow:auto;padding:10px 0 5px}
+.node{background:#0c1b2b;border:1px solid var(--stroke);border-radius:10px;min-width:110px;text-align:center;padding:13px 8px;font-weight:700;font-size:12px}
+.node em{font-style:normal;color:var(--muted);display:block;font-weight:400}
+.arrow{align-self:center;color:var(--blue)}
+.learn{border-left:3px solid var(--blue);padding:5px 14px;margin:12px 0 4px;color:#dcecf7}
+.learn p{margin:0 0 10px}
+.line{border-top:1px solid var(--stroke);margin:16px 0}
+.ticket{background:#0b1c2d;border:1px solid #326080;border-radius:12px;padding:14px;margin:13px 0}
+.ticket strong{color:var(--blue)}
+.result{padding:12px;border:1px solid #34617d;background:#0b2537;border-radius:11px;margin-top:10px;white-space:pre-wrap;min-height:48px;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:12px;overflow-wrap:anywhere}
+.result.ok{border-color:#2d8064;color:#bdf8dd}
+.result.bad{border-color:#966043;color:#ffdaa4}
+.label{display:block;font-size:12px;color:var(--muted);margin:0 0 5px}
+.field{width:100%;background:#081827;color:var(--text);border:1px solid #35526c;padding:11px 9px;border-radius:9px;min-width:0}
+.row{display:flex;gap:9px;align-items:center;flex-wrap:wrap}
+.checkgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.diag{background:#152942;color:var(--text);text-align:left;border:1px solid #304861;padding:11px;border-radius:10px}
+.diag:hover{background:#1c3855}
+.tabstrip{display:flex;gap:7px;overflow-x:auto;margin-bottom:14px;padding-bottom:4px}
+.tab{color:var(--muted);background:#102538;border:1px solid var(--stroke);border-radius:8px;padding:9px 12px;white-space:nowrap}
+.tab.active{color:#e9fbff;border-color:var(--blue);background:#184563}
+.settings{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.setting{background:#0a1c2e;padding:12px;border:1px solid var(--stroke);border-radius:12px}
+.setting p{margin:2px 0 9px;color:var(--muted);font-size:12px;min-height:32px}
+.setting .row{flex-wrap:nowrap}
+.setting .btn{padding:9px 11px}
+.note{border-radius:10px;padding:12px 14px;margin:10px 0;background:#17314a;color:#d6ebf9;font-size:13px}
+.note.warn{background:#3b2b20;color:#ffe1b4}
+.note.good{background:#123f35;color:#c2ffe5}
+.activity{max-height:210px;overflow:auto;display:flex;flex-direction:column-reverse;gap:6px}
+.log{padding:9px 10px;border-radius:8px;background:#0b1b2b;color:#b6d2e4;font-size:12px}
+.quiz{font-size:16px;font-weight:650}
+.stat-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:11px}
+.stat{padding:12px;background:#0b2134;border:1px solid #28465b;border-radius:12px}
+.stat b{display:block;font-size:24px;color:var(--blue)}
+.mutedbox{background:#0a1c2d;border-radius:12px;padding:13px;border:1px solid var(--stroke)}
+.hint{margin-top:10px;padding:10px 12px;background:#233650;border:1px solid #38597e;border-radius:9px}
+.hint summary{cursor:pointer;font-weight:700}
+.score{font-size:62px;letter-spacing:-.05em;line-height:1;color:var(--blue);font-weight:850;margin:10px 0}
+.pass{color:var(--green)}
+.fail{color:var(--amber)}
+.foot{color:var(--muted);font-size:12px;margin-top:25px}
+.mobilecases{display:none}
+@media(max-width:830px){.layout{grid-template-columns:1fr}
+.side{display:none}
+.mobilecases{display:block;margin-bottom:12px}
+.hero{padding:16px}
+.panel{padding:14px}
+.app{padding:12px 12px 70px}
+.cluster,.settings{grid-template-columns:1fr}
+.flow .node{min-width:95px}
+.checkgrid{grid-template-columns:1fr}
+.step{padding:8px 3px;font-size:11px}
+.stat-grid{gap:6px}
+.stat{padding:8px}
+.stat b{font-size:20px}
+}
+
+</style>
+</head><body>
+<div class="app"><header class="top"><div class="brand"><span class="brandmark">A</span><span>ALPHA FAULTLAB<small>Virtual network troubleshooting academy • v3.5</small></span></div><span class="pill">SIMULATION ONLY · NO LIVE CUSTOMER CHANGES</span></header>
+<div class="hero"><div class="eyebrow">Alpha Connect • Learn by doing</div><h1>Understand it. Diagnose it. Fix it. Prove it.</h1><div class="muted">Every module begins with a plain-English explanation, continues in a guided virtual network, and finishes with a separate independent practical assessment.</div></div>
+<div class="layout"><aside class="panel side"><h3>13 practical modules</h3><div class="muted small">Select a case to begin or continue.</div><div id="caseList"><div class="muted small" style="padding:12px 0">Preparing 13 troubleshooting modules…</div></div></aside><main class="main">
+<div class="mobilecases"><label class="label" for="mobileCase">Choose training module</label><select class="field" id="mobileCase" onchange="selectCase(Number(this.value))"></select></div>
+<div class="stepper"><div id="st0" class="step">1 · Explain</div><div id="st1" class="step">2 · Guided lab</div><div id="st2" class="step">3 · Assessment</div><div id="st3" class="step">4 · Results</div></div><div id="startupStatus" class="note" role="status">Starting FaultLab v3.5… If this message stays visible, check the diagnostic test at <b>the same app URL with ?diag=1</b>.</div><noscript><div class="note warn">JavaScript is required for the interactive training simulator. Enable JavaScript and reload.</div></noscript><section id="content"></section>
+<div class="foot">FaultLab is a self-contained educational simulation. Router views and readings are fictional training data, not live Cudy/MikroTik/Splynx connections. Progress is stored in this browser on this device. For production incidents, follow Alpha Connect SOPs and escalate network changes to nCloud where appropriate.</div>
+</main></div></div>
+<script>
+(function(){
+ var s=document.getElementById('startupStatus');
+ if(s){s.textContent='JavaScript enabled. Initialising FaultLab v3.5…';}
+ window.faultlabRuntimeParsed=false;
+ window.faultlabStartupProblem=function(message){
+  if(document.documentElement.getAttribute('data-faultlab-ready')==='yes')return;
+  if(s){s.className='note warn';s.style.display='block';s.textContent='FaultLab v3.5 startup error: '+message;}
+ };
+ window.addEventListener('error',function(e){window.faultlabStartupProblem((e.message||'JavaScript error')+' at line '+e.lineno);});
+ window.addEventListener('unhandledrejection',function(e){window.faultlabStartupProblem('Promise rejection: '+String(e.reason));});
+ setTimeout(function(){if(document.documentElement.getAttribute('data-faultlab-ready')!=='yes'&&s&&s.className.indexOf('warn')<0){window.faultlabStartupProblem('Engine did not initialise. Check latest deployment.');}},3000);
+})();
+</script>
+<script>
+'use strict';
+const MODELS={
+wanCable:{title:'WAN cable and link',concept:'Wi-Fi is a local wireless connection; the WAN link carries traffic from the indoor router to the outdoor CPE. Check the physical path before editing DNS.',detail:'A Cudy can broadcast Wi-Fi even when the WAN cable is disconnected. A WAN interface reporting link down points towards cabling, the CPE, or the device at the far end.',hint:'Compare local Wi-Fi association with the router WAN link state, then investigate the upstream cable.',fault:{wanCable:false},repair:{key:'wanCable',value:'true'},evidence:['router','cpe']},
+dns:{title:'DNS name resolution',concept:'DNS translates names such as example.com into IP addresses. A faulty DNS resolver can break websites while basic IP connectivity still works.',detail:'When pinging a public IP succeeds but name resolution fails, investigate DNS settings before changing WAN cables or factory resetting the router.',hint:'Compare a public IP ping with a website name lookup.',fault:{dns:'broken'},repair:{key:'dns',value:'8.8.8.8'},evidence:['pingip','dns']},
+dhcp:{title:'DHCP and client addresses',concept:'DHCP automatically gives the customer device a local IP address, subnet mask and default gateway. A device with a 169.254.x.x address has not received a usable DHCP lease.',detail:'A router may itself have internet while phones cannot get valid LAN settings. Inspect the client lease and LAN DHCP configuration separately.',hint:'Inspect the customer IP address and the Cudy LAN DHCP server.',fault:{dhcp:false},repair:{key:'dhcp',value:'true'},evidence:['client','router']},
+wifi24:{title:'2.4 GHz versus 5 GHz',concept:'Many older or smart-home devices support 2.4 GHz only. A working 5 GHz network cannot replace a disabled 2.4 GHz radio for such a device.',detail:'If one device cannot join while newer phones work, first identify which band the affected device supports.',hint:'Check the affected device capabilities and the Cudy 2.4 GHz radio.',fault:{wifi24:false},repair:{key:'wifi24',value:'true'},evidence:['client','router']},
+wanMode:{title:'Correct WAN protocol',concept:'Alpha Connect normally configures PPPoE on the customer's Cudy WR1200. The WAN method must match the service provisioning in Splynx.',detail:'Choosing the wrong WAN protocol may leave a router connected physically but without a usable internet session. Do not guess the live customer provisioning mode.',hint:'Compare the Cudy WAN protocol with the simulated provisioned service protocol.',fault:{wanMode:'DHCP'},repair:{key:'wanMode',value:'PPPoE'},evidence:['router','splynx']},
+pppoe:{title:'PPPoE authentication',concept:'Where a connection uses PPPoE, credentials are authenticated upstream. An incorrect password causes session authentication to fail even if the cable is connected.',detail:'Confirm PPPoE is the actual provisioned method. Invalid PPPoE credentials are not a reason to reset the entire router.',hint:'Check the WAN session message and the provisioned authentication details.',fault:{pppoe:'invalid'},repair:{key:'pppoe',value:'correct'},evidence:['router','splynx']},
+poe:{title:'Power over Ethernet',concept:'Many outdoor CPEs receive power through a PoE injector. Loss of CPE power breaks the upstream path while indoor Wi-Fi may still be visible.',detail:'Inspect the CPE power/heartbeat status and the cabling/injector before editing router configuration.',hint:'Check whether the outdoor CPE has power and can report a radio connection.',fault:{poe:false},repair:{key:'poe',value:'true'},evidence:['cpe','router']},
+alignment:{title:'Wireless signal and alignment',concept:'The customer CPE depends on a strong wireless path to the high-site sector. Poor alignment or obstruction can cause packet loss and unreliable service.',detail:'Do not confuse poor RF quality with a DNS-only fault. Check radio signal and CCQ/quality together with packet loss; simulated field realignment is performed by a technician.',hint:'Inspect CPE RF quality and the packet-loss test.',fault:{alignment:'poor'},repair:{key:'alignment',value:'good'},evidence:['cpe','pingip']},
+account:{title:'Splynx account and service',concept:'Physical connectivity can be healthy while access is suspended due to service/account status. Technicians must follow billing/authorisation procedures.',detail:'Inspect service status through Splynx read-only. Do not override a suspended account from the network side; request an authorised billing/service review.',hint:'Check Splynx service state against the router physical link.',fault:{account:'suspended'},repair:{key:'account',value:'review'},evidence:['splynx','router']},
+sector:{title:'High-site outage and power',concept:'A high-site radio or switch outage can impact multiple customers at once. When the sector is down, changing individual customer DNS settings will not restore it.',detail:'Correlate customer issues with the high-site health. Escalate site power/network faults and arrange authorised restoration.',hint:'Check the high-site status and compare with the CPE sector association.',fault:{sector:'offline'},repair:{key:'sector',value:'restore'},evidence:['site','mikrotik']},
+channel:{title:'Wi-Fi interference and channels',concept:'Nearby Wi-Fi networks can congest a channel. Signal bars may be strong while local Wi-Fi still loses packets.',detail:'Confirm upstream connectivity separately from local Wi-Fi quality. Selecting a cleaner channel can improve performance; avoid changing high-site RF settings from a home-router exercise.',hint:'Check the client Wi-Fi quality and router channel utilisation.',fault:{channel:'congested'},repair:{key:'channel',value:'6'},evidence:['client','router']},
+gateway:{title:'Static gateway and routes',concept:'With a provisioned static WAN, the default gateway tells the router where to send traffic destined for the internet.',detail:'An incorrect gateway may prevent routing even though the WAN cable and IP address appear normal. Check provisioning values before changing settings.',hint:'Compare the provisioned static gateway with the configured WAN gateway.',fault:{gateway:'10.50.0.254'},repair:{key:'gateway',value:'10.50.0.1'},evidence:['router','splynx']},
+backhaul:{title:'Backhaul and manual failover',concept:'A wireless backhaul link connects high sites where needed. A standby route may exist without activating automatically.',detail:'Alpha Connect backup links may require manual switching. Investigate both paths and escalate switching to nCloud or the authorised engineer; never assume automatic failover.',hint:'Check high-site primary/backup links, then request authorised manual failover.',fault:{backhaul:'failed'},repair:{key:'backhaul',value:'failover'},evidence:['site','mikrotik']}
+};
+const CASES=[
+{id:'01',name:'Connected Wi-Fi, no internet',model:'wanCable',g:'A Hluhluwe customer sees full Wi-Fi bars, but all websites time out.',a:'An Mtubatuba client reports Wi-Fi connected; no apps load after someone moved the router.',target:'Customer phone'},
+{id:'02',name:'Websites will not resolve',model:'dns',g:'A Pongola customer can reach a public IP, but websites fail to open.',a:'An Eshowe customer has good WAN status but cannot use web domains.',target:'Customer laptop'},
+{id:'03',name:'No IP address assigned',model:'dhcp',g:'A new customer phone connects to the home Wi-Fi but shows an invalid IP.',a:'A customer tablet connects to Wi-Fi and receives an automatic private address.',target:'Customer phone'},
+{id:'04',name:'Smart device cannot join',model:'wifi24',g:'A 2.4 GHz-only smart camera cannot see the customer network.',a:'An older 2.4 GHz-only printer cannot join after a router change.',target:'2.4 GHz device'},
+{id:'05',name:'WAN misconfiguration',model:'wanMode',g:'After router replacement, Cudy cannot establish an internet session.',a:'A replacement router has an active Ethernet link but no usable WAN lease.',target:'Customer laptop'},
+{id:'06',name:'PPPoE session rejected',model:'pppoe',g:'A lab service provisioned for PPPoE reports an authentication failure.',a:'After a credential edit, PPPoE logs display authentication rejected.',target:'Customer laptop'},
+{id:'07',name:'Outdoor receiver offline',model:'poe',g:'The outdoor CPE stopped responding while indoor Wi-Fi stayed on.',a:'A new CPE installation has no heartbeat or wireless association.',target:'Customer phone'},
+{id:'08',name:'Intermittent RF link',model:'alignment',g:'Wireless signal to the sector deteriorated after stormy weather.',a:'A customer reports evening dropouts and high packet loss to the high site.',target:'Customer laptop'},
+{id:'09',name:'Account active or suspended?',model:'account',g:'The WAN cable and radio link are healthy but service is denied.',a:'The customer router appears physically online yet access is blocked.',target:'Customer phone'},
+{id:'10',name:'Multiple customers offline',model:'sector',g:'Several clients on the same sector lost connectivity at once.',a:'A high-site power event caused a group of customers to disconnect.',target:'Customer phone'},
+{id:'11',name:'Slow Wi-Fi inside the house',model:'channel',g:'Outdoor link is stable, but indoor Wi-Fi has high retry rates.',a:'Customer is next to router with strong Wi-Fi but poor throughput.',target:'Customer laptop'},
+{id:'12',name:'Wrong static WAN gateway',model:'gateway',g:'A statically provisioned lab router cannot reach the wider internet.',a:'A router replacement uses the correct IP but an incorrect default route.',target:'Customer laptop'},
+{id:'13',name:'Backhaul failure and escalation',model:'backhaul',g:'High-site primary backhaul failed; standby link has not been activated.',a:'Multiple sites have lost primary backhaul, and automatic failover did not happen.',target:'Customer phone'}
+];
+const REPAIRS={
+wanCable:{name:'WAN Ethernet cable',options:['Connected','Disconnected'],read:s=>s.wanCable?'Connected':'Disconnected',write:(s,v)=>s.wanCable=v==='Connected',correct:'Connected',permission:'Router / onsite cabling'},dns:{name:'DNS resolver',options:['Automatic','8.8.8.8','8.8.4.4','Broken resolver'],read:s=>s.dns==='auto'?'Automatic':s.dns==='broken'?'Broken resolver':s.dns,write:(s,v)=>s.dns=v==='Automatic'?'auto':v==='Broken resolver'?'broken':v,correct:'8.8.8.8',permission:'Cudy WAN / DNS'},dhcp:{name:'LAN DHCP server',options:['Enabled','Disabled'],read:s=>s.dhcp?'Enabled':'Disabled',write:(s,v)=>s.dhcp=v==='Enabled',correct:'Enabled',permission:'Cudy LAN'},wifi24:{name:'2.4 GHz radio',options:['Enabled','Disabled'],read:s=>s.wifi24?'Enabled':'Disabled',write:(s,v)=>s.wifi24=v==='Enabled',correct:'Enabled',permission:'Cudy Wi-Fi'},wanMode:{name:'WAN connection method',options:['DHCP','PPPoE','Static'],read:s=>s.wanMode,write:(s,v)=>s.wanMode=v,correct:'PPPoE',permission:'Cudy WAN'},pppoe:{name:'PPPoE profile',options:['Stored approved credentials','Incorrect credentials'],read:s=>s.pppoe==='correct'?'Stored approved credentials':'Incorrect credentials',write:(s,v)=>s.pppoe=v==='Stored approved credentials'?'correct':'invalid',correct:'Stored approved credentials',permission:'Provisioned credential selection'},poe:{name:'Outdoor CPE PoE power',options:['Powered / injector connected','No PoE power'],read:s=>s.poe?'Powered / injector connected':'No PoE power',write:(s,v)=>s.poe=v==='Powered / injector connected',correct:'Powered / injector connected',permission:'Physical / technician'},alignment:{name:'CPE alignment (technician)',options:['Optimal alignment','Poor alignment'],read:s=>s.alignment==='good'?'Optimal alignment':'Poor alignment',write:(s,v)=>s.alignment=v==='Optimal alignment'?'good':'poor',correct:'Optimal alignment',permission:'Field technician action'},account:{name:'Authorised account review',options:['Request billing/service approval','Bypass suspension (unsafe)'],read:_=>'Awaiting request',write:(s,v)=>{if(v==='Request billing/service approval')s.account='active';},correct:'Request billing/service approval',permission:'Billing authorization workflow'},sector:{name:'High-site power restoration',options:['Escalate / dispatch authorised technician','Ignore high-site fault'],read:_=>'Action required',write:(s,v)=>{if(v==='Escalate / dispatch authorised technician')s.sector='online';},correct:'Escalate / dispatch authorised technician',permission:'NOC/field restoration'},channel:{name:'Indoor Wi-Fi channel',options:['Auto / congested','Channel 1','Channel 6','Channel 11'],read:s=>s.channel==='congested'?'Auto / congested':s.channel==='Auto'?'Auto / congested': 'Channel '+s.channel,write:(s,v)=>s.channel=v==='Auto / congested'?'congested':v.replace('Channel ',''),correct:'Channel 6',permission:'Cudy Wi-Fi / site survey'},gateway:{name:'Static WAN gateway',options:['10.50.0.254','10.50.0.1'],read:s=>s.gateway,write:(s,v)=>s.gateway=v,correct:'10.50.0.1',permission:'Cudy WAN / static route'},backhaul:{name:'Backhaul recovery',options:['Ask nCloud for authorised manual failover','Assume backup switches automatically'],read:_=>'Escalation required',write:(s,v)=>{if(v==='Ask nCloud for authorised manual failover')s.backhaul='backup';},correct:'Ask nCloud for authorised manual failover',permission:'nCloud-authorised recovery'}};
+var STORAGE_KEY = 'alpha_faultlab_v3_progress';
+var progress = {};
+try { progress = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}') || {}; } catch (ignored) { progress = {}; }
+var chosen = 0;
+var stage = 0;
+var session = null;
+var tab = 'diagnostics';
+var lastOutput = '';
+var lastClass = '';
+var logs = [];
+var assessmentResult = null;
+var CHECKS = [
+ ['client','Customer device / IP'], ['router','Cudy WR1200 status'], ['cpe','Outdoor CPE / signal'],
+ ['site','High-site health'], ['mikrotik','MikroTik / RouterOS (read-only)'],
+ ['splynx','Splynx service (read-only)'], ['pingip','Ping public IP'], ['dns','DNS name lookup'],
+ ['web','Open customer website'], ['endtest','End-to-end customer test']
+];
+function el(id) { return document.getElementById(id); }
+function textSafe(value) { return String(value == null ? '' : value).replace(/[&<>"']/g,function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
+function htmlLines(lines) { return lines.join(''); }
+function storeProgress() { try { localStorage.setItem(STORAGE_KEY,JSON.stringify(progress)); } catch (ignored) {} }
+function pushLog(value) { logs.unshift(new Date().toLocaleTimeString('en-ZA') + ' · ' + value); }
+function newState(name) {
+ var s={routerPower:true,wanCable:true,wanMode:'PPPoE',serviceMode:'PPPoE',dns:'8.8.8.8',dhcp:true,wifi24:true,wifi5:true,pppoe:'correct',poe:true,alignment:'good',account:'active',sector:'online',channel:'Auto',gateway:'10.50.0.1',backhaul:'primary'};
+ if (name==='pppoe') {s.wanMode='PPPoE';s.serviceMode='PPPoE';}
+ if (name==='gateway') {s.wanMode='Static';s.serviceMode='Static';}
+ Object.assign(s,MODELS[name].fault);
+ return s;
+}
+function uplink(s) { return s.routerPower && s.wanCable && s.poe && s.sector==='online' && s.backhaul!=='failed' && s.wanMode===s.serviceMode && (s.wanMode!=='PPPoE'||s.pppoe==='correct') && (s.wanMode!=='Static'||s.gateway==='10.50.0.1') && s.account==='active'; }
+function dnsOK(s) {return uplink(s) && s.dns!=='broken';}
+function internetOK(s) {return dnsOK(s)&&s.dhcp&&s.wifi24&&s.alignment==='good'&&s.channel!=='congested';}
+function startSession(kind) {
+ stage=(kind==='guided'?1:2);
+ session={kind:kind,model:CASES[chosen].model,state:newState(CASES[chosen].model),preChecks:{},allChecks:{},verified:{},repairDone:false,wrongEdits:0,actions:0};
+ tab='diagnostics';lastOutput='';lastClass='';assessmentResult=null;logs=[];
+ pushLog('Ticket opened. Start with evidence before making changes.');render();
+}
+function selectCase(index){if(index<0||index>=CASES.length||!Number.isInteger(index))return;chosen=index;stage=0;session=null;assessmentResult=null;render();}
+function backToExplanation(){stage=0;session=null;render();}
+function selectAssessment(){if(!progress[CASES[chosen].id]||!progress[CASES[chosen].id].guided)return;startSession('assessment');}
+function resetSession(){if(session&&confirm('Reset the current virtual ticket?'))startSession(session.kind);}
+function changeTab(name){tab=name;render();}
+function diagnostic(which){
+ if(!session)return;
+ var s=session.state;var m=session.model;var x=[];
+ session.actions++;session.allChecks[which]=true;
+ if(!session.repairDone)session.preChecks[which]=true;
+ if(which==='client'){
+  x=['CUSTOMER DEVICE / '+CASES[chosen].target,'Wi-Fi: '+(s.wifi24?'Associated on 2.4 GHz':'2.4 GHz unavailable'),'IP: '+(s.dhcp?'192.168.10.105':'169.254.32.11'),'Gateway: '+(s.dhcp?'192.168.10.1':'not assigned'),'Wi-Fi retries: '+(s.channel==='congested'?'42%':'2%'),'Internet: '+(internetOK(s)?'Available':'Limited / not working')];
+ } else if(which==='router'){
+  var link=s.wanCable&&s.poe&&s.routerPower;
+  x=['CUDY WR1200 / ROUTER STATUS','Router power: '+(s.routerPower?'ON':'OFF'),'WAN Ethernet: '+(link?'UP':'DOWN'),'WAN protocol: '+s.wanMode,'WAN session: '+(link&&s.wanMode===s.serviceMode&&(s.wanMode!=='PPPoE'||s.pppoe==='correct')?'CONNECTED':'DISCONNECTED'),'LAN DHCP: '+(s.dhcp?'Enabled':'Disabled'),'2.4 GHz radio: '+(s.wifi24?'Enabled':'Disabled'),'DNS resolver: '+s.dns,'Wi-Fi channel: '+(s.channel==='congested'?'Auto / 92% busy':s.channel),'WAN gateway: '+s.gateway];
+  if(s.wanMode==='PPPoE')x.push('PPPoE: '+(s.pppoe==='correct'?'Authenticated':'AUTHENTICATION REJECTED'));
+  if(m==='channel')x.push('Channel survey: CH1 87% busy; CH6 16% busy; CH11 76% busy');
+ } else if(which==='cpe'){
+  x=['OUTDOOR CPE / TELEMETRY','PoE: '+(s.poe?'Present':'NO POWER'),'CPE to router Ethernet: '+(s.wanCable?'Link present':'NO LINK'),'Sector association: '+(s.poe&&s.sector==='online'?'Associated':'Offline'),'Signal: '+(s.alignment==='good'?'-59 dBm':'-85 dBm'),'Link quality: '+(s.alignment==='good'?'94%':'31%'),'Management: '+(s.poe?'Responding':'Not reachable')];
+ } else if(which==='site'){
+  x=['HIGH-SITE STATUS','Sector: '+(s.sector==='online'?'ONLINE':'OFFLINE / site power fault'),'Primary backhaul: '+(s.backhaul==='failed'?'DOWN':'UP'),'Standby radio: Available, but not automatically selected','Failover: nCloud/authorised engineer must switch manually','Other clients affected: '+(s.sector==='online'&&s.backhaul!=='failed'?'None reported':'Several')];
+ } else if(which==='mikrotik'){
+  x=['MIKROTIK ROUTEROS / READ-ONLY', '/interface print','ether1-upstream: '+(s.backhaul==='failed'?'DOWN':'RUNNING'),'sector1: '+(s.sector==='online'?'RUNNING':'OFFLINE'),'standby: RUNNING (not active)','/ip route print','default route: '+(s.backhaul==='failed'?'INACTIVE':'ACTIVE'),'Standby route requires authorised manual action'];
+ } else if(which==='splynx'){
+  x=['SPLYNX / CUSTOMER SERVICE (READ ONLY)','Service status: '+(s.account==='active'?'ACTIVE':'SUSPENDED'),'Provisioned WAN: '+s.serviceMode,'Static gateway: '+(s.serviceMode==='Static'?'10.50.0.1':'Not applicable'),'PPPoE: '+(s.serviceMode==='PPPoE'?'Credentials provisioned':'Not applicable'),'Access policy: '+(s.account==='active'?'Allowed':'Blocked / billing review required')];
+ } else if(which==='pingip'){
+  x=['PING 1.1.1.1 / ROUTER', !uplink(s)?'4 packets sent; 0 received; 100% loss':s.alignment==='poor'?'20 packets; 13 received; 35% loss':'4 packets sent; 4 received; 0% loss','Router ping does not prove local Wi-Fi or client DHCP works'];
+ } else if(which==='dns'){
+  x=['DNS / ROUTER','Resolver: '+s.dns,'Public IP ping: '+(uplink(s)?'PASS':'FAIL'),'nslookup example.com: '+(dnsOK(s)?'PASS':'FAIL / timeout')];
+ } else if(which==='web'){
+  x=['CUSTOMER WEB BROWSER',internetOK(s)?'HTTP 200 - website loaded successfully':'NETWORK ERROR - site cannot load'];
+  if(session.repairDone && internetOK(s))session.verified.web=true;else session.verified.web=false;
+ } else if(which==='endtest'){
+  x=['END-TO-END CUSTOMER CONNECTION TEST','Wi-Fi radio: '+(s.wifi24?'PASS':'FAIL'),'Client IP lease: '+(s.dhcp?'PASS':'FAIL'),'WAN route: '+(uplink(s)?'PASS':'FAIL'),'DNS: '+(dnsOK(s)?'PASS':'FAIL'),'RF and Wi-Fi quality: '+(s.alignment==='good'&&s.channel!=='congested'?'PASS':'FAIL'),'Customer browsing: '+(internetOK(s)?'PASS':'FAIL')];
+  if(session.repairDone && internetOK(s))session.verified.endtest=true;else session.verified.endtest=false;
+ }
+ lastOutput=x.join('\n');lastClass=(which==='web'||which==='endtest')?(internetOK(s)?'ok':'bad'):'';
+ pushLog('Checked: '+which);render();
+}
+function applySetting(key){
+ if(!session)return;
+ var conf=REPAIRS[key];var select=el('set_'+key);if(!conf||!select)return;
+ var next=select.value;var before=conf.read(session.state);if(next===before)return;
+ session.actions++;
+ var legitimate=(key===session.model && next===conf.correct);
+ if(legitimate){conf.write(session.state,next);session.repairDone=true;session.verified={};lastOutput='Simulated action applied. Next: use both the customer web test and the end-to-end customer test to prove recovery.';lastClass='ok';}
+ else {session.wrongEdits++;
+  if(key==='account'||key==='sector'||key==='backhaul'){lastOutput='Unsafe or unauthorised action rejected. Escalation/approval is required.';}
+  else {conf.write(session.state,next);lastOutput='Setting changed, but it was not a justified root-cause repair. Review the impact.';}
+  lastClass='bad';session.verified={};
+ }
+ pushLog('Action: '+conf.name+' = '+next);render();
+}
+function guidedComplete(){return session && session.kind==='guided' && session.repairDone && internetOK(session.state) && session.verified.web && session.verified.endtest;}
+function finishGuided(){if(!guidedComplete())return;var id=CASES[chosen].id;progress[id]=progress[id]||{};progress[id].guided=true;storeProgress();backToExplanation();}
+function submitAssessment(){
+ if(!session||session.kind!=='assessment')return;
+ var needed=MODELS[session.model].evidence;
+ var count=needed.filter(function(k){return !!session.preChecks[k];}).length;
+ var functional=session.repairDone&&internetOK(session.state);
+ var fix= functional?45:0;
+ var investigation=count*12.5;
+ var verification=(functional&&session.verified.web?10:0)+(functional&&session.verified.endtest?10:0);
+ var safe=Math.max(0,10-session.wrongEdits*5);
+ var score=Math.round(fix+investigation+verification+safe);
+ var passed=score>=75&&functional&&!!session.verified.web&&!!session.verified.endtest;
+ assessmentResult={score:score,passed:passed,fix:fix,investigation:investigation,verification:verification,safe:safe,needed:count,mistakes:session.wrongEdits};
+ var id=CASES[chosen].id;progress[id]=progress[id]||{};progress[id].attempts=(progress[id].attempts||0)+1;
+ progress[id].best=Math.max(progress[id].best||0,score);if(passed)progress[id].passed=true;storeProgress();stage=3;render();
+}
+function renderList(){
+ el('caseList').innerHTML=CASES.map(function(c,i){var p=progress[c.id]||{};
+  return '<button class="case '+(i===chosen?'active':'')+'" onclick="selectCase('+i+')"><span class="number">'+c.id+'</span><span class="case-title">'+textSafe(c.name)+'<small>'+(p.passed?'✓ Assessment passed':p.guided?'Guided completed':'Not started')+'</small></span></button>';
+ }).join('');
+ el('mobileCase').innerHTML=CASES.map(function(c,i){return '<option value="'+i+'">'+c.id+'. '+textSafe(c.name)+'</option>';}).join('');
+ el('mobileCase').value=String(chosen);
+}
+function renderSteps(){for(var i=0;i<4;i++){el('st'+i).className='step '+(stage===i?'on':i<stage?'done':'');}}
+function explainView(){
+ var c=CASES[chosen];var m=MODELS[c.model];var p=progress[c.id]||{};
+ var passed=CASES.filter(function(x){return progress[x.id]&&progress[x.id].passed;}).length;
+ return htmlLines([
+ '<div class="panel"><div class="eyebrow">Module '+c.id+' · Technical fundamentals</div><h2>'+textSafe(m.title)+'</h2><p class="muted">'+textSafe(c.name)+'</p>',
+ '<div class="stat-grid"><div class="stat"><b>'+passed+'/13</b><span class="small muted">Assessments passed</span></div><div class="stat"><b>'+(p.best==null?'—':p.best)+'</b><span class="small muted">Best mark /100</span></div><div class="stat"><b>'+(p.attempts||0)+'</b><span class="small muted">Attempts</span></div></div>',
+ '<div class="line"></div><h3>How the customer connection works</h3>',
+ '<div class="flow"><div class="node">Fibre input<em>One of several</em></div><span class="arrow">→</span><div class="node">High site<em>Radio + backhaul</em></div><span class="arrow">→</span><div class="node">Outdoor CPE<em>Wireless link</em></div><span class="arrow">→</span><div class="node">Cudy WR1200<em>Indoor Wi-Fi</em></div><span class="arrow">→</span><div class="node">Customer<em>Phone / laptop</em></div></div>',
+ '<div class="learn"><p><b>Key concept:</b> '+textSafe(m.concept)+'</p><p>'+textSafe(m.detail)+'</p></div>',
+ '<div class="note">Method: <b>short explanation → guided simulation → independent practical assessment → results.</b></div>',
+ '<div class="actions"><button class="btn" onclick="startSession(\'guided\')">'+(p.guided?'Repeat guided simulation':'Start guided simulation')+' →</button>',
+ '<button class="btn secondary" onclick="selectAssessment()" '+(p.guided?'':'disabled')+'>Independent assessment '+(p.guided?'→':'(unlock after guided)')+'</button></div></div>'
+ ]);
+}
+function diagnosticsView(){
+ return '<div class="panel"><h3>Diagnostic instruments</h3><p class="muted small">Select a device or test to inspect simulated telemetry before changing settings.</p><div class="checkgrid">'+CHECKS.map(function(item){return '<button class="diag" onclick="diagnostic(\''+item[0]+'\')">▸ '+textSafe(item[1])+(session.allChecks[item[0]]?' ✓':'')+'</button>';}).join('')+'</div></div>';
+}
+function settingsView(){
+ return '<div class="panel"><h3>Simulated router and field actions</h3><p class="muted small">Only change settings supported by the evidence. Unsafe or unnecessary edits reduce your score.</p><div class="settings">'+Object.keys(REPAIRS).map(function(key){var conf=REPAIRS[key];var actual=conf.read(session.state);
+  return '<div class="setting"><b>'+textSafe(conf.name)+'</b><p>'+textSafe(conf.permission)+'</p><div class="row"><select class="field" id="set_'+key+'">'+conf.options.map(function(option){return '<option'+(option===actual?' selected':'')+'>'+textSafe(option)+'</option>';}).join('')+'</select><button class="btn secondary" onclick="applySetting(\''+key+'\')">Apply</button></div></div>';
+ }).join('')+'</div></div>';
+}
+function simulationView(){
+ var c=CASES[chosen];var m=MODELS[c.model];var guided=session.kind==='guided';var valid=guidedComplete();
+ var ticket=guided?c.g:c.a;
+ var guidance= guided ? '<div class="panel"><h3>Guided troubleshooting</h3><div class="cluster"><div class="mutedbox"><b>1. Observe</b><p class="small muted">Check customer symptoms and physical links.</p></div><div class="mutedbox"><b>2. Isolate</b><p class="small muted">Compare router, CPE, Splynx, DNS and high site.</p></div><div class="mutedbox"><b>3. Correct</b><p class="small muted">Apply only the justified simulated repair.</p></div><div class="mutedbox"><b>4. Prove</b><p class="small muted">Run customer web and end-to-end checks.</p></div></div><details class="hint"><summary>Need a hint?</summary><p>'+textSafe(m.hint)+'</p></details></div>'
+ : '<div class="note warn">Independent assessment: No hints are available until you submit. Your diagnostics, decisions and verification determine your result.</div>';
+ var out=htmlLines([
+ '<div class="panel"><div class="eyebrow">'+(guided?'Guided simulation':'Independent assessment')+' · Module '+c.id+'</div><h2>'+textSafe(c.name)+'</h2><div class="ticket"><strong>Customer report</strong><p>'+textSafe(ticket)+'</p><p class="small muted">Device: '+textSafe(c.target)+' · Cudy WR1200 · Wireless CPE</p></div>',
+ guidance,'<div class="row"><button class="btn ghost" onclick="resetSession()">↻ Reset ticket</button><span class="pill">Actions: '+session.actions+' · Incorrect edits: '+session.wrongEdits+'</span></div></div>',
+ '<div class="tabstrip"><button class="tab '+(tab==='diagnostics'?'active':'')+'" onclick="changeTab(\'diagnostics\')">1 · Inspect & test</button><button class="tab '+(tab==='settings'?'active':'')+'" onclick="changeTab(\'settings\')">2 · Router & field actions</button><button class="tab '+(tab==='log'?'active':'')+'" onclick="changeTab(\'log\')">3 · Activity log</button></div>'
+ ]);
+ if(tab==='diagnostics')out+=diagnosticsView();
+ else if(tab==='settings')out+=settingsView();
+ else out+='<div class="panel"><h3>Activity log</h3><div class="activity">'+logs.map(function(t){return '<div class="log">'+textSafe(t)+'</div>';}).join('')+'</div></div>';
+ if(tab!=='log')out+='<div class="panel"><h3>Diagnostic response</h3><div class="result '+lastClass+'">'+textSafe(lastOutput||'Select a diagnostic or apply a setting to inspect simulated equipment output.')+'</div></div>';
+ out+='<div class="panel"><h3>'+(guided?'Guided simulation completion':'Mark independent assessment')+'</h3><p class="muted small">'+(guided?'Fix the fault then prove customer browsing and run the complete customer test.':'Marking includes the correct repair, evidence collected before editing, unnecessary changes and post-fix verification.')+'</p><div class="actions">';
+ out+=guided?'<button class="btn success" onclick="finishGuided()" '+(valid?'':'disabled')+'>'+(valid?'✓ Complete guided lab':'Resolve and verify first')+'</button>' : '<button class="btn success" onclick="submitAssessment()">Submit assessment for marking →</button>';
+ out+='<button class="btn ghost" onclick="backToExplanation()">Back to explanation</button></div></div>';
+ return out;
+}
+function resultView(){
+ var c=CASES[chosen];var m=MODELS[c.model];var r=assessmentResult;
+ return htmlLines([
+ '<div class="panel"><div class="eyebrow">Module '+c.id+' · Practical assessment results</div><h2>'+textSafe(c.name)+'</h2>',
+ '<div class="score '+(r.passed?'pass':'fail')+'">'+r.score+'<span class="small">/100</span></div><h3>'+(r.passed?'Assessment passed':'More practice needed')+'</h3>',
+ '<p class="muted">'+(r.passed?'Customer service was restored and verified.':'To pass, achieve 75/100, restore the connection and verify with both customer tests.')+'</p>',
+ '<div class="stat-grid"><div class="stat"><b>'+r.fix+'/45</b><span class="small muted">Correct repair</span></div><div class="stat"><b>'+r.investigation+'/25</b><span class="small muted">Evidence before repair</span></div><div class="stat"><b>'+r.verification+'/20</b><span class="small muted">Verification</span></div></div>',
+ '<div class="note">Safe change score '+r.safe+'/10 · Unnecessary edits '+r.mistakes+' · Relevant tests '+r.needed+'/2.</div>',
+ '<h3>Technical debrief</h3><p>'+textSafe(m.concept)+'</p><p>'+textSafe(m.detail)+'</p><p><b>Root cause:</b> '+textSafe(m.title)+'</p><p><b>Correct action:</b> '+textSafe(REPAIRS[c.model].name)+' → '+textSafe(REPAIRS[c.model].correct)+'</p>',
+ '<p class="muted small">Virtual educational simulation only. No changes were made to real network equipment or to Splynx.</p>',
+ '<div class="actions"><button class="btn" onclick="startSession(\'assessment\')">Retry assessment</button><button class="btn secondary" onclick="backToExplanation()">Return to explanation</button><button class="btn secondary" onclick="selectCase('+Math.min(chosen+1,12)+')">'+(chosen<12?'Next module →':'Review last module')+'</button></div></div>'
+ ]);
+}
+function render(){
+ renderList();renderSteps();
+ el('content').innerHTML=stage===0?explainView():stage===3?resultView():simulationView();
+ el('startupStatus').style.display='none';document.documentElement.setAttribute('data-faultlab-ready','yes');
+}
+try {
+ render();
+ if(!document.querySelector('#caseList button.case'))throw Error('13-module list did not render');
+ window.faultlabRuntimeParsed='v3.5';
+} catch(error) {
+ if(window.faultlabStartupProblem)window.faultlabStartupProblem('Engine: '+(error&&error.message||String(error)));
+ if(window.console)console.error(error);
+}
+
+</script>
+</body></html>
